@@ -3,16 +3,19 @@ package com.example.mbtitest;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements Serializable{
     private ArrayList<MyData> mDataset;
 
     // Provide a reference to the views for each data item
@@ -27,6 +30,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             super(view);
             mImageView = (ImageView)view.findViewById(R.id.imagefff);
             mTextView = (TextView)view.findViewById(R.id.textview);
+            mTextView.setTextSize((float) 15);
+            mTextView.setTextColor(Color.parseColor("#000000"));
         }
     }
 
@@ -64,12 +69,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 }
 
-class MyData{
+class MyData implements Serializable {
     public String text;
     public int img;
     public MyData(String text, int img){
         this.text = text;
         this.img = img;
     }
-
 }
