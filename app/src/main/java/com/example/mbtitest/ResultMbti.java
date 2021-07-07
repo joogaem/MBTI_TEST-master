@@ -2,11 +2,13 @@ package com.example.mbtitest;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.print.PrintJob;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 
 
 //7.30 추가
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,14 +34,14 @@ import java.util.Random;
 
 public class ResultMbti extends AppCompatActivity {
 
-    private BackPressCloseHandler backKeyClickHandler;
     JSONArray jsonArray_p;
+    private ArrayList<MyData> myDataset;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resultmbti);
-        backKeyClickHandler = new BackPressCloseHandler(this);  //뒤로 가기 버튼 핸들러 : 1번 토스트 팝업 , 2번 앱 종료
 
         AssetManager assetManager= getAssets(); //7.30 추가
 
@@ -96,7 +99,7 @@ public class ResultMbti extends AppCompatActivity {
         result_m[13][0] = "ENFJ"; result_m[13][1] = "ESFJ"; //3개
         result_m[14][0] = "ESFP"; result_m[14][1] = "ESTP";
         result_m[15][0] = "ESFJ"; result_m[15][1] = "ESTJ";
-        //앞으로 14*2 더 추가
+
 
         Random rd = new Random();
         int random = rd.nextInt(2);
@@ -122,7 +125,7 @@ public class ResultMbti extends AppCompatActivity {
 
         //TextView tx2  = (TextView) findViewById(R.id.tx2);
         //tx2.setText(index2);
-        System.out.println("ss");
+        //System.out.println("ss");
 
         switch (r_idx){
             case 0:
@@ -242,32 +245,14 @@ public class ResultMbti extends AppCompatActivity {
                 break;
         }
 
-        Button btn = (Button) findViewById(R.id.btn);  //돌아가기 버튼
-
-        btn.setText("⟳ 돌아가기");
 
 
-
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent2 = new Intent(getApplicationContext(),MainActivity.class);  //자신의 mbti를 선택하는 화면으로 다시 돌아가기
-                startActivity(intent2);
-            }
-        });
-
-    }
-
-    //aos back 버튼을 1번 눌렀을 시, 토스트 팝업 노출 2번 눌렀을 시, 앱 종료
-
-    @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
-        backKeyClickHandler.onBackPressed();
     }
 
     //idx=0
     void ENFJ () throws JSONException {
+
+        myDataset = new ArrayList<>();
 
         for (int i=74; i<108;i++) {
 
@@ -276,20 +261,22 @@ public class ResultMbti extends AppCompatActivity {
             //index i인 row의 name필드와 group필드값 불러옴 1)
             String name = jo.getString("name");
             String group = jo.getString("group");
-            System.out.println(group+" "+name);
+            System.out.println(group+" "+name );
             TextView tx2 = (TextView) findViewById(R.id.tx2);
             tx2.setText(group+name); //멘트 수정해야 함
+
+            //int tempId = getResources().getIdentifier(name,"drawable",this.getPackageName());
+
+            myDataset.add(new MyData(group + " " + name, R.drawable.hani));  //모든 값 저장시킴
+
         }
+        sendData("ENFJ",myDataset);
     }
 
     //idx=1
     void ENFP() throws JSONException {
-        //TextView tx3 = (TextView) findViewById(R.id.tx2);
-        //tx3.setText("EXID 하니"); //멘트 수정해야 함
 
-        //ImageView imageView = (ImageView)findViewById(R.id.imageView);
-
-        //imageView.setImageResource(R.drawable.hani);
+        myDataset = new ArrayList<>();
 
         for (int i=0; i<38;i++) {
             JSONObject jo = jsonArray_p.getJSONObject(i);
@@ -300,11 +287,18 @@ public class ResultMbti extends AppCompatActivity {
             System.out.println(group+" "+name);
             TextView tx2 = (TextView) findViewById(R.id.tx2);
             tx2.setText(group+" "+name); //멘트 수정해야 함
+
+            myDataset.add(new MyData(group + " " + name, R.drawable.test_img_dessert));  //모든 값 저장시킴
         }
+
+
     }
 
     //idx=2
     void ENTJ() throws JSONException {
+
+        myDataset = new ArrayList<>();
+
         for (int i=194; i<201;i++) {
             JSONObject jo = jsonArray_p.getJSONObject(i);
 
@@ -314,11 +308,19 @@ public class ResultMbti extends AppCompatActivity {
             System.out.println(group+" "+name);
             TextView tx2 = (TextView) findViewById(R.id.tx2);
             tx2.setText(group+" "+name); //멘트 수정해야 함
+
+            myDataset.add(new MyData(group + " " + name, R.drawable.test_img_dessert));  //모든 값 저장시킴
         }
+
+        sendData("ESFJ",myDataset);
+
     }
 
     //idx=3
     void ENTP() throws JSONException {
+
+        myDataset = new ArrayList<>();
+
         for (int i=215; i<222;i++) {
             JSONObject jo = jsonArray_p.getJSONObject(i);
 
@@ -328,11 +330,19 @@ public class ResultMbti extends AppCompatActivity {
             System.out.println(group+" "+name);
             TextView tx2 = (TextView) findViewById(R.id.tx2);
             tx2.setText(group+" "+name); //멘트 수정해야 함
+
+            myDataset.add(new MyData(group + " " + name, R.drawable.test_img_dessert));  //모든 값 저장시킴
+
         }
+
+        sendData("ENTP",myDataset);
     }
 
     //idx=4
     void ESFJ() throws JSONException {
+
+        myDataset = new ArrayList<>();
+
         for (int i=132; i<146;i++) {
             JSONObject jo = jsonArray_p.getJSONObject(i);
 
@@ -340,13 +350,21 @@ public class ResultMbti extends AppCompatActivity {
             String name = jo.getString("name");
             String group = jo.getString("group");
             System.out.println(group+" "+name);
-            TextView tx2 = (TextView) findViewById(R.id.tx2);
-            tx2.setText(group+" "+name); //멘트 수정해야 함
+
+            //int tempId = getResources().getIdentifier(name,"drawable",this.getPackageName());
+
+            myDataset.add(new MyData(group + " " + name, R.drawable.test_img_dessert));  //모든 값 저장시킴
+
+            //myDataset.add(new MyData(group + " " + name, R.drawable.test_img_dessert));
         }
+
+        sendData("ESFJ",myDataset);
     }
 
     //idx=5
     void ESFP() throws JSONException {
+        myDataset = new ArrayList<>();
+
         for (int i=184; i<194;i++) {
             JSONObject jo = jsonArray_p.getJSONObject(i);
 
@@ -354,9 +372,10 @@ public class ResultMbti extends AppCompatActivity {
             String name = jo.getString("name");
             String group = jo.getString("group");
             System.out.println(group+" "+name);
-            TextView tx2 = (TextView) findViewById(R.id.tx2);
-            tx2.setText(group+" "+name); //멘트 수정해야 함
+
+            myDataset.add(new MyData(group + " " + name, R.drawable.test_img_dessert));  //모든 값 저장시킴
         }
+        sendData("ESFP",myDataset);
     }
 
     //idx=6
@@ -370,6 +389,7 @@ public class ResultMbti extends AppCompatActivity {
             System.out.println(group+" "+name);
             TextView tx2 = (TextView) findViewById(R.id.tx2);
             tx2.setText(group+" "+name); //멘트 수정해야 함
+
         }
     }
 
@@ -500,6 +520,11 @@ public class ResultMbti extends AppCompatActivity {
     }
 
 
+    void sendData(String a, ArrayList data){
+        Intent in1= new Intent(getApplicationContext(),MyResult.class);
+        in1.putExtra("friend",a);
+        in1.putExtra("allData",data);
+        startActivity(in1);
+    }
+
 }
-
-
